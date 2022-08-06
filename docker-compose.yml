@@ -1,0 +1,28 @@
+version: '3.4'
+
+services:
+  redis:
+    image: redis:latest
+  database:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: sourcehut
+      POSTGRES_DB: sourcehut
+      POSTGRES_PASSWORD: sourcehut
+    volumes:
+      - db-data:/var/lib/postgresql/data
+  git:
+    build: ./git/
+    ports:
+      - "5000:5000"
+      - "5001:5001"
+    volumes:
+      - git-data:/var/lib/git
+      - ./config.ini.template:/etc/sr.ht/config.ini.template
+    links:
+      - database
+      - redis
+
+volumes:
+  db-data:
+  git-data:

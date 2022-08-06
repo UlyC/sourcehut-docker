@@ -1,0 +1,215 @@
+[sr.ht]
+#
+# The name of your network of sr.ht-based sites
+site-name=sourcehut
+#
+# The top-level info page for your site
+site-info=https://sourcehut.org
+#
+# {{ site-name }}, {{ site-blurb }}
+site-blurb=the hacker's forge
+#
+# If this != production, we add a banner to each page
+environment=production
+#
+# Contact information for the site owners
+owner-name=Drew DeVault
+owner-email=sir@cmpwn.com
+#
+# The source code for your fork of sr.ht
+source-url=https://git.sr.ht/~sircmpwn/srht
+#
+# A key used for encrypting session cookies. Use `srht-keygen service` to
+# generate the service key. This must be shared between each node of the same
+# service (e.g. git1.sr.ht and git2.sr.ht), but different services may use
+# different keys. If you configure all of your services with the same
+# config.ini, you may use the same service-key for all of them.
+service-key={{SERVICE_KEY}}
+#
+# A secret key to encrypt internal messages with. Use `srht-keygen network` to
+# generate this key. It must be consistent between all services and nodes.
+network-key={{NETWORK_KEY}}
+#
+# The redis host URL. This is used for caching and temporary storage, and must
+# be shared between nodes (e.g. git1.sr.ht and git2.sr.ht), but need not be
+# shared between services. It may be shared between services, however, with no
+# ill effect, if this better suits your infrastructure.
+redis-host=redis://127.0.0.1:6379
+#
+# The Prometheus Pushgateway instance to deliver gitsrht-periodic metrics to (http[s]://host:port)
+pushgateway=
+
+[objects]
+# Configure the S3-compatible object storage service. Leave empty to disable
+# object storage.
+#
+# Minio is recommended as a FOSS solution over AWS: https://min.io
+s3-upstream=
+s3-access-key=
+s3-secret-key=
+
+[mail]
+#
+# Outgoing SMTP settings
+smtp-host=
+smtp-port=
+smtp-from=
+#
+# Default: starttls
+# Options: starttls, tls, insecure
+smtp-encryption=starttls
+#
+# Default: plain
+# Options: plain, none
+smtp-auth=plain
+# user / password are required if smtp-auth is plain
+smtp-user=
+smtp-password=
+#
+# Application exceptions are emailed to this address
+error-to=
+error-from=
+#
+# You should generate a PGP key to allow users to authenticate emails received
+# from your services. Use `gpg --edit-key [key id]` to remove the password from
+# your private key, then export it to a file and set pgp-privkey to the path to
+# that file. pgp-pubkey should be set to the path to your public key, and
+# pgp-key-id should be set to the key ID string. Outgoing emails are signed with
+# this PGP key.
+pgp-privkey=
+pgp-pubkey=
+pgp-key-id=
+
+[webhooks]
+#
+# base64-encoded Ed25519 key for signing webhook payloads. This should be
+# consistent between all services.
+#
+# Use the `srht-keygen webhook` command to generate this key. Put the private
+# key here and distribute the public key to anyone who would want to verify
+# webhook payloads from your service.
+private-key= {{WEBHOOK_KEY}}
+
+
+[git.sr.ht]
+#
+# URL git.sr.ht is being served at (protocol://domain)
+origin={{DOMAIN}}
+#
+# Address and port to bind the debug server to
+debug-host=0.0.0.0
+debug-port=5001
+#
+# Configures the SQLAlchemy connection string for the database.
+connection-string=postgresql://postgres@localhost/git.sr.ht
+#
+# Set to "yes" to automatically run migrations on package upgrade.
+migrate-on-upgrade=yes
+#
+# The redis connection used for the webhooks worker
+webhooks=redis://localhost:6379/1
+#
+# A post-update script which is installed in every git repo.
+post-update-script=/usr/bin/gitsrht-update-hook
+#
+# git.sr.ht's OAuth client ID and secret for meta.sr.ht
+# Register your client at meta.example.org/oauth
+oauth-client-id=CHANGEME
+oauth-client-secret=CHANGEME
+#
+# Path to git repositories on disk
+repos=/var/lib/git/
+#
+# Configure the S3 bucket and prefix for object storage. Leave empty to disable
+# object storage. Bucket is required to enable object storage; prefix is
+# optional.
+s3-bucket=
+s3-prefix=
+#
+# Required for preparing and sending patchsets from git.sr.ht
+outgoing-domain=
+
+#
+# Origin URL for the API
+# Only needed if not run behind a reverse proxy, e.g. for local development.
+# By default, the API port is 100 more than the web port
+#api-origin=http://localhost:5101
+
+[git.sr.ht::api]
+#
+# Maximum complexity of GraphQL queries. The higher this number, the more work
+# that API clients can burden the API backend with. Complexity is equal to the
+# number of discrete fields which would be returned to the user. 200 is a good
+# default.
+max-complexity=200
+
+#
+# The maximum time the API backend will spend processing a single API request.
+#
+# See https://golang.org/pkg/time/#ParseDuration
+max-duration=3s
+
+#
+# Set of IP subnets which are permitted to utilize internal API
+# authentication. This should be limited to the subnets from which your
+# *.sr.ht services are running.
+#
+# Comma-separated, CIDR notation.
+internal-ipnet=127.0.0.0/8,::1/128,192.168.0.0/16,10.0.0.0/8
+
+[git.sr.ht::dispatch]
+#
+# The authorized keys hook uses this to dispatch to various handlers
+# The format is a program to exec into as the key, and the user to match as the
+# value. When someone tries to log in as this user, this program is executed
+# and is expected to omit an AuthorizedKeys file.
+#
+# Uncomment the relevant lines to enable the various sr.ht dispatchers.
+/usr/bin/gitsrht-keys=git:git
+#/usr/bin/buildsrht-keys=builds:builds
+
+[meta.sr.ht]
+origin={{DOMAIN}}:5000
+#
+# Address and port to bind the debug server to
+debug-host=0.0.0.0
+debug-port=5000
+#
+# Configures the SQLAlchemy connection string for the database.
+connection-string=postgresql://postgres@localhost/meta.sr.ht
+#
+# Set to "yes" to automatically run migrations on package upgrade.
+migrate-on-upgrade=yes
+
+[meta.sr.ht::settings]
+#
+# If "no", public registration will not be permitted.
+registration=yes
+#
+# Where to redirect new users upon registration
+onboarding-redirect={{DOMAIN}}:5000
+#
+# How many invites each user is issued upon registration (only applicable if
+# open registration is disabled)
+user-invites=5
+
+[meta.sr.ht::aliases]
+#
+# You can add aliases for the client IDs of commonly used OAuth clients here.
+#
+# Example:
+# git.sr.ht=12345
+# Uncomment this to provide optional builds.sr.ht integration
+
+#[builds.sr.ht]
+#origin=http://builds.sr.ht.local
+#oauth-client-id=CHANGEME
+
+[meta.sr.ht::billing]
+#
+# "yes" to enable the billing system
+enabled=no
+#
+# Get your keys at https://dashboard.stripe.com/account/apikeys
+stripe-public-key=
+stripe-secret-key=
