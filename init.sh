@@ -1,5 +1,8 @@
 #!/bin/bash
-set -e
+#======================================
+#   Author: ulyc
+#======================================
+set -eo pipefail
 red='\e[91m'
 green='\e[92m'
 yellow='\e[93m'
@@ -24,6 +27,34 @@ function add_module() {
   fi
 }
 
+function progress() {
+  echo "$2 IS RUNNING..."
+  printf "[▓"
+  while kill -0 "$1" 2>/dev/null; do
+    printf "▓"
+    sleep 1
+  done
+  wait "$1"
+  printf "▓] done!"
+}
+
+function generate_config() {
+  service_key=$(grep <genkeys Service | awk -F: '{print $2}')
+  network_key=$(grep <genkeys Network | awk -F: '{print $2}')
+  webhook_key=$(grep <genkeys Webhook | awk -F: 'BEGIN{print $2}')
+  sed "s/{{SERVICE_KEY}}/$service_key/" ./template/config.ini.template >config.ini
+  sed -i "s/{{NETWORK_KEY}}/$network_key/" config.ini
+  sed -i "s/{{WEBHOOK_KEY}}/$webhook_key/" config.ini
+  sed -i "s@{{DOMAIN}}@$domain_name@" config.ini
+}
+
+function build_base_image() {
+  docker build -t sr.ht-base:dev ./base/ && echo
+}
+
+function generate_keys() {
+  docker run  sr.ht-base:dev sh -c 'srht-keygen service && srht-keygen network && srht-keygen webhook' | awk '{n[1]="Service";n[2]="Network";n[3]=n[4]="Webhook";print n[NR]" "$0 > "genkeys"}'
+}
 
 # Git or Mercurial or Both
 echo -e "Select your distributed version control system ${cyan}1.Git${none} or ${cyan}2.Mercurial${none} or ${cyan}3.Both${none}?"
@@ -74,60 +105,37 @@ echo -e "Do you want to use ${cyan}Syntax highlighting${none}? ${cyan}1.Yes${non
 add_module "paste.sr.ht"
 
 # issue and bug tracker service
-#  todo.sr.ht
+# todo.sr.ht
 echo -e "Do you want to use ${cyan}issue and bug tracker service${none}? ${cyan}1.Yes${none} or ${cyan}2.No${none}?"
 add_module "todo.sr.ht"
-echo
-echo
 
-echo -e "---------------------------${green}Start generate Dockerfile ${none}--------------------------------------"
 echo
 echo
-sed "s/{{MODULES}}/$modules/" ./template/Dockerfile.template >Dockerfile
+sed "s/{{MODULES}}/$modules/" ./template/Dockerfile.template >Dockerfile &
+progress $! "🐋Generate Dockerfile"
 # TODO start.sh
-echo
-echo
-echo -e "---------------------------${green}Generate Dockerfile success${none}--------------------------------------"
 
-## build base image
-#
-#echo -e "---------------------------${green}Start build base image ${none}--------------------------------------"
-#docker build -t sr.ht-base:dev ./base/
-#echo
-#echo -e "---------------------------${green}Build base image success${none}--------------------------------------"
-
-## generate keys
-
-echo -e "---------------------------${green}Start  generate  keys${none}-----------------------------------------"
 echo
 echo
-docker run sr.ht-base:dev sh -c 'srht-keygen service && srht-keygen network && srht-keygen webhook' | awk '{n[1]="Service";n[2]="Network";n[3]=n[4]="Webhook";print n[NR]" "$0 > "genkeys"}'
+build_base_image &
+progress $! "🐋Build Base Image"
+
+echo
+echo
+generate_keys &
+progress $! "🔒Generate Keys"
 echo
 echo
 echo -e "$(<genkeys)"
 echo -e "${yellow}Distribute the webhook public key to anyone who would want to verify ${none}"
 echo -e "${yellow}webhook payloads from your service.${none}"
 echo -e "${yellow}you can see generated keys in the  'genkeys' file ${none}"
-echo
-echo
-echo -e "---------------------------${green}Generate keys success${none}-----------------------------------------"
-echo
-echo
 
-## generate config
-echo -e "---------------------------${green}Start  generate  config${none}---------------------------------------"
 echo
 echo
-service_key=$(<genkeys  grep Service | awk -F: '{print $2}')
-network_key=$(<genkeys  grep Network | awk -F: '{print $2}')
-webhook_key=$(<genkeys  grep Webhook | awk -F: 'BEGIN{print $2}')
-sed "s/{{SERVICE_KEY}}/$service_key/" ./template/config.ini.template > config.ini
-sed -i "s/{{NETWORK_KEY}}/$network_key/" config.ini
-sed -i "s/{{WEBHOOK_KEY}}/$webhook_key/" config.ini
-echo "$domain_name"
-sed -i "s@{{DOMAIN}}@$domain_name@" config.ini
+generate_config
+progress $! "🔧Generate Config"
 echo
 echo
-echo -e "---------------------------${green}Generate keys success${none}-----------------------------------------"
 
 # TODO modules config
