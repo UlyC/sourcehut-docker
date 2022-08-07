@@ -74,7 +74,13 @@ function generate_launch_shell() {
     m=$(echo "$md" | awk -v i="$i" '{print $i }')
     mp="500$i"
     echo "/usr/bin/gunicorn $m .app:app -b 0.0.0.0:$mp " >>"start.sh"
-    m_domain=$domain_name:$mp
+
+    m_domain="$m.$domain_name"
+
+    if [[ "$domain_name"  == "http://localhost" ]]; then
+         m_domain=$domain_name:$mp
+    fi
+
     tp="{{"$m"_domain}}"
     sed -i "s@$tp@$m_domain@" config.ini
   done
@@ -168,15 +174,16 @@ function select_mode() {
 select_mode
 
 # Set Domain
-echo -e "Set your ${cyan} Domain name ${none} or ${cyan}s (skip)${none}?"
+echo -e "Set your ${cyan} Domain name (no http(s) prefix )${none} or ${cyan}s (skip) to use localhost${none}?"
 read -r domain_input
 echo
-if [[ "$domain_input" == 's' ]] || [[ -z "$null" ]]; then
+echo "domain_input :$domain_input"
+if [[ "$domain_input" == 's' || -z "$domain_input" ]]; then
   echo -e "$yellow skip${none}"
 else
   domain_name=$domain_input
 fi
-
+echo "domain:  $domain_name"
 echo
 echo
 generate_launch_shell "$modules" &
