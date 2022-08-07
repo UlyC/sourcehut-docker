@@ -18,6 +18,7 @@ _cyan() { echo -e "${cyan}$*${none}"; }
 
 domain_name="http://localhost"
 modules=""
+meta_module="meta.sr.ht"
 git_module="git.sr.ht"
 hg_module="hg.sr.ht"
 build_module="builds.sr.h"
@@ -63,6 +64,14 @@ function generate_keys() {
 function build_base_image() {
   docker build -t sr.ht-base:dev ./base/ && echo
 }
+
+function generate_launch_shell() {
+  m="$meta_module $1"
+  m_count=$(echo "$m" | awk '{print NF}')
+  echo "$m" | awk '{ gsub(/\./,"");for (i=1; i<=NF; i++)  print "/usr/bin/gunicorn "$i ".app:app -b 0.0.0.0:500" i > "start.sh" }'
+  sed "s/{{PORTS}}/5001-500$m_count:5001-500$m_count/" ./template/docker-compose.yml.template >docker-compose.yml
+}
+
 
 function select_version_control() {
   # Git or Mercurial or Both
@@ -159,13 +168,16 @@ else
   domain_name=$domain_input
 fi
 
-# TODO start.sh
-#
+echo
+echo
+generate_launch_shell "$modules" &
+progress $! "🤖 Generate Launch Shell"
+
+
 echo
 echo
 sed "s/{{MODULES}}/$modules/" ./template/Dockerfile.template >Dockerfile &
 progress $! "🐋 Generate Dockerfile"
-
 
 echo
 echo

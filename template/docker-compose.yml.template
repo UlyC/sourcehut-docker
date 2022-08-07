@@ -14,8 +14,7 @@ services:
   git:
     build: ./git/
     ports:
-      - "5000:5000"
-      - "5001:5001"
+      {{PORTS}}
     volumes:
       - git-data:/var/lib/git
       - ./config.ini:/etc/sr.ht/config.ini
