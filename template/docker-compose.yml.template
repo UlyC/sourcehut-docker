@@ -11,8 +11,8 @@ services:
       POSTGRES_PASSWORD: sourcehut
     volumes:
       - db-data:/var/lib/postgresql/data
-  git:
-    build: ./git/
+  srhts:
+    build: ./
     ports:
       - {{PORTS}}
     volumes:
