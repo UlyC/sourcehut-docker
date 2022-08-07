@@ -14,7 +14,7 @@ services:
   git:
     build: ./git/
     ports:
-      {{PORTS}}
+      - {{PORTS}}
     volumes:
       - git-data:/var/lib/git
       - ./config.ini:/etc/sr.ht/config.ini
