@@ -18,7 +18,7 @@ services:
       - "5001:5001"
     volumes:
       - git-data:/var/lib/git
-      - ./config.ini.template:/etc/sr.ht/config.ini.template
+      - ./config.ini:/etc/sr.ht/config.ini
     links:
       - database
       - redis
