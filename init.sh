@@ -70,6 +70,7 @@ function generate_launch_shell() {
   m_count=$(echo "$m" | awk '{print NF}')
   echo "$m" | awk '{ gsub(/\./,"");for (i=1; i<=NF; i++)  print "/usr/bin/gunicorn "$i ".app:app -b 0.0.0.0:500" i > "start.sh" }'
   sed "s/{{PORTS}}/5001-500$m_count:5001-500$m_count/" ./template/docker-compose.yml.template >docker-compose.yml
+  echo "tail -f /dev/null" >> start.sh
 }
 
 
