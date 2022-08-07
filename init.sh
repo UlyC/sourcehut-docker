@@ -51,7 +51,7 @@ function generate_config() {
   service_key=$(grep <genkeys "Service" | awk -F: '{gsub(/[[:blank:]]*/,"");print $2}')
   network_key=$(grep <genkeys "Network" | awk -F: '{gsub(/[[:blank:]]*/,"");print $2}')
   webhook_key=$(grep <genkeys "Webhook Private" | awk -F: '{gsub(/[[:blank:]]*/,"");print $2}')
-  sed "s/{{SERVICE_KEY}}/$service_key/" ./template/config.ini.template >config.ini
+  sed -i "s/{{SERVICE_KEY}}/$service_key/" config.ini
   sed -i "s/{{NETWORK_KEY}}/$network_key/" config.ini
   sed -i "s@{{WEBHOOK_KEY}}@$webhook_key@" config.ini
   sed -i "s@{{DOMAIN}}@$domain_name@" config.ini
@@ -66,13 +66,21 @@ function build_base_image() {
 }
 
 function generate_launch_shell() {
-  m="$meta_module $1"
-  m_count=$(echo "$m" | awk '{print NF}')
-  echo "$m" | awk '{ gsub(/\./,"");for (i=1; i<=NF; i++)  print "/usr/bin/gunicorn "$i ".app:app -b 0.0.0.0:500" i > "start.sh" }'
-  sed "s/{{PORTS}}/5001-500$m_count:5001-500$m_count/" ./template/docker-compose.yml.template >docker-compose.yml
-  echo "tail -f /dev/null" >> start.sh
+  md="$(echo "$meta_module $1" | awk '{ gsub(/\./,""); print $0 }')"
+  md_count=$(echo "$md" | awk '{print NF}')
+  cp ./template/config.ini.template config.ini
+  echo "" >"start.sh"
+  for ((i = 1; i <= "$md_count"; i++)); do
+    m=$(echo "$md" | awk -v i="$i" '{print $i }')
+    mp="500$i"
+    echo "/usr/bin/gunicorn $m .app:app -b 0.0.0.0:$mp " >>"start.sh"
+    m_domain=$domain_name:$mp
+    tp="{{"$m"_domain}}"
+    sed -i "s@$tp@$m_domain@" config.ini
+  done
+  sed "s/{{PORTS}}/5001-500$md_count:5001-500$md_count/" ./template/docker-compose.yml.template >docker-compose.yml
+  echo "tail -f /dev/null" >>start.sh
 }
-
 
 function select_version_control() {
   # Git or Mercurial or Both
@@ -173,7 +181,6 @@ echo
 echo
 generate_launch_shell "$modules" &
 progress $! "🤖 Generate Launch Shell"
-
 
 echo
 echo
