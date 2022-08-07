@@ -41,16 +41,16 @@ function progress() {
   printf "[▓"
   while kill -0 "$1" 2>/dev/null; do
     printf "▓"
-    sleep 1
+    sleep 0.05
   done
   wait "$1"
   printf "▓] done!"
 }
 
 function generate_config() {
-  service_key=$(grep <genkeys Service | awk -F: '{print $2}')
-  network_key=$(grep <genkeys Network | awk -F: '{print $2}')
-  webhook_key=$(grep <genkeys Webhook | awk -F: 'BEGIN{print $2}')
+  service_key=$(grep <genkeys "Service" | awk -F: '{sub(/[[:blank:]]*/,"");print $2}')
+  network_key=$(grep <genkeys "Network" | awk -F: '{sub(/[[:blank:]]*/,"");print $2}')
+  webhook_key=$(grep <genkeys "Webhook Private" | awk -F: '{sub(/[[:blank:]]*/,"");print $2}')
   sed "s/{{SERVICE_KEY}}/$service_key/" ./template/config.ini.template >config.ini
   sed -i "s/{{NETWORK_KEY}}/$network_key/" config.ini
   sed -i "s/{{WEBHOOK_KEY}}/$webhook_key/" config.ini
@@ -203,3 +203,4 @@ echo
 echo
 
 # TODO modules config
+# TODO Database secret

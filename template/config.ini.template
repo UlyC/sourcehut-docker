@@ -88,7 +88,7 @@ pgp-key-id=
 # Use the `srht-keygen webhook` command to generate this key. Put the private
 # key here and distribute the public key to anyone who would want to verify
 # webhook payloads from your service.
-private-key= {{WEBHOOK_KEY}}
+private-key={{WEBHOOK_KEY}}
 
 
 [git.sr.ht]
@@ -213,3 +213,28 @@ enabled=no
 # Get your keys at https://dashboard.stripe.com/account/apikeys
 stripe-public-key=
 stripe-secret-key=
+
+[paste.sr.ht]
+#
+# URL paste.sr.ht is being served at (protocol://domain)
+origin=http://paste.sr.ht.local
+#
+# Address and port to bind the debug server to
+debug-host=0.0.0.0
+debug-port=5011
+#
+# Configures the SQLAlchemy connection string for the database.
+connection-string=postgresql://postgres@localhost/paste.sr.ht
+#
+# Set to "yes" to automatically run migrations on package upgrade.
+migrate-on-upgrade=yes
+#
+# paste.sr.ht's OAuth client ID and secret for meta.sr.ht
+# Register your client at meta.example.org/oauth
+oauth-client-id=
+oauth-client-secret=
+#
+# Origin URL for the API
+# Only needed if not run behind a reverse proxy, e.g. for local development.
+# By default, the API port is 100 more than the web port
+#api-origin=http://localhost:5111
