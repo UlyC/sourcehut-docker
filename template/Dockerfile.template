@@ -2,7 +2,7 @@ FROM sr.ht-base:dev
 COPY ./start.sh /
 
 RUN apk add  {{MODULES}}
-COMMAND ["./start.sh"]
+CMD ["./start.sh"]
 
 
 
