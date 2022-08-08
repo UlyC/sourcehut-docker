@@ -73,8 +73,8 @@ function generate_launch_shell() {
   for ((i = 1; i <= "$md_count"; i++)); do
     m=$(echo "$md" | awk -v i="$i" '{print $i }')
     mp="500$i"
+    echo "$m-initdb" >>"start.sh"
     echo "/usr/bin/gunicorn $m.app:app -b 0.0.0.0:$mp -D" >>"start.sh"
-
     m_domain="http://$m.$domain_name"
 
     if [[ "$domain_name"  == "http://127.0.0.1" ]]; then
