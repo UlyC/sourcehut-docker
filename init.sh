@@ -16,7 +16,7 @@ _yellow() { echo -e "${yellow}$*${none}"; }
 _magenta() { echo -e "${magenta}$*${none}"; }
 _cyan() { echo -e "${cyan}$*${none}"; }
 
-domain_name="http://localhost"
+domain_name="http://127.0.0.1"
 modules=""
 meta_module="meta.sr.ht"
 git_module="git.sr.ht"
