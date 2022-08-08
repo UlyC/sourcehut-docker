@@ -201,9 +201,6 @@ user-invites=5
 # git.sr.ht=12345
 # Uncomment this to provide optional builds.sr.ht integration
 
-#[builds.sr.ht]
-#origin=http://builds.sr.ht.local
-#oauth-client-id=CHANGEME
 
 [meta.sr.ht::billing]
 #
@@ -242,7 +239,7 @@ oauth-client-secret=
 [lists.sr.ht]
 #
 # URL lists.sr.ht is being served at (protocol://domain)
-origin={{listsrht_domain}}
+origin={{listssrht_domain}}
 #
 # Address and port to bind the debug server to
 debug-host=0.0.0.0
@@ -382,7 +379,7 @@ posting-domain=
 [builds.sr.ht]
 #
 # URL builds.sr.ht is being served at (protocol://domain)
-origin={{buildsrht_domain}}
+origin={{buildssrht_domain}}
 #
 # Address and port to bind the debug server to
 debug-host=0.0.0.0
@@ -528,12 +525,3 @@ internal-ipnet=127.0.0.0/8,::1/128,192.168.0.0/16,10.0.0.0/8
 
 # NOTE: this is not a typo. It goes into the git dispatch section because
 # that script actually handles all the dispatching (git, hg, man, etc.)
-[git.sr.ht::dispatch]
-#
-# The authorized keys hook uses this to dispatch to various handlers
-# The format is a program to exec into as the key, and the user to match as the
-# value. When someone tries to log in as this user, this program is executed
-# and is expected to emit an AuthorizedKeys file.
-#
-# Uncomment the relevant lines to enable the various sr.ht dispatchers.
-/usr/bin/hgsrht-keys=hg:hg
