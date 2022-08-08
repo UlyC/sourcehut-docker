@@ -459,3 +459,81 @@ trigger-from=
 # optional.
 s3-bucket=
 s3-prefix=
+
+[hg.sr.ht]
+#
+# URL hg.sr.ht is being served at (protocol://domain)
+origin={{hgsrht_domain}}
+#
+# Address and port to bind the debug server to
+debug-host=0.0.0.0
+debug-port=5010
+#
+# Configures the SQLAlchemy connection string for the database.
+connection-string=postgresql://postgres@localhost/hg.sr.ht
+#
+# The redis connection used for the webhooks worker
+webhooks=redis://localhost:6379/1
+#
+# Disable server "publishing" for new repositories.
+# When 'true', this sets the phases.publish configuration option to 'false' on
+# newly created Mercurial repositories.
+disable-publishing=false
+#
+# A post-update script which is installed in every mercurial repo.
+changegroup-script=/usr/bin/hgsrht-hook-changegroup
+#
+# hg.sr.ht's OAuth client ID and secret for meta.sr.ht
+# Register your client at meta.example.org/oauth
+oauth-client-id=CHANGEME
+oauth-client-secret=CHANGEME
+#
+# Path to mercurial repositories on disk
+repos=/var/lib/mercurial/
+#
+# Path to the srht mercurial extension
+# (defaults to where the hgsrht code is)
+#srhtext=
+#
+# .hg/store size (in MB) past which the nightly job generates clone bundles.
+#clone_bundle_threshold=50
+#
+# Path to hg (if not in $PATH or if you want sourcehut to use a custom one)
+# hg_path=/path/to/hg
+
+[hg.sr.ht::api]
+#
+# Number of mercurial server processes to spawn
+# server-pool-size=4
+#
+# Maximum complexity of GraphQL queries. The higher this number, the more work
+# that API clients can burden the API backend with. Complexity is equal to the
+# number of discrete fields which would be returned to the user. 200 is a good
+# default.
+max-complexity=200
+
+#
+# The maximum time the API backend will spend processing a single API request.
+#
+# See https://golang.org/pkg/time/#ParseDuration
+max-duration=3s
+
+#
+# Set of IP subnets which are permitted to utilize internal API
+# authentication. This should be limited to the subnets from which your
+# *.sr.ht services are running.
+#
+# Comma-separated, CIDR notation.
+internal-ipnet=127.0.0.0/8,::1/128,192.168.0.0/16,10.0.0.0/8
+
+# NOTE: this is not a typo. It goes into the git dispatch section because
+# that script actually handles all the dispatching (git, hg, man, etc.)
+[git.sr.ht::dispatch]
+#
+# The authorized keys hook uses this to dispatch to various handlers
+# The format is a program to exec into as the key, and the user to match as the
+# value. When someone tries to log in as this user, this program is executed
+# and is expected to emit an AuthorizedKeys file.
+#
+# Uncomment the relevant lines to enable the various sr.ht dispatchers.
+/usr/bin/hgsrht-keys=hg:hg
