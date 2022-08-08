@@ -73,7 +73,7 @@ function generate_launch_shell() {
   for ((i = 1; i <= "$md_count"; i++)); do
     m=$(echo "$md" | awk -v i="$i" '{print $i }')
     mp="500$i"
-    echo "/usr/bin/gunicorn $m .app:app -b 0.0.0.0:$mp " >>"start.sh"
+    echo "/usr/bin/gunicorn $m.app:app -b 0.0.0.0:$mp -D" >>"start.sh"
 
     m_domain="$m.$domain_name"
 
