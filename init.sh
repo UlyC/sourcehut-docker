@@ -75,7 +75,7 @@ function generate_launch_shell() {
     mp="500$i"
     echo "/usr/bin/gunicorn $m.app:app -b 0.0.0.0:$mp -D" >>"start.sh"
 
-    m_domain="$m.$domain_name"
+    m_domain="http://$m.$domain_name"
 
     if [[ "$domain_name"  == "http://localhost" ]]; then
          m_domain=$domain_name:$mp
