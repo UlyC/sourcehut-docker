@@ -101,7 +101,7 @@ debug-host=0.0.0.0
 debug-port=5001
 #
 # Configures the SQLAlchemy connection string for the database.
-connection-string=postgresql://postgres@localhost/git.sr.ht
+connection-string=postgresql://sourcehut:sourcehut@database/sourcehut
 #
 # Set to "yes" to automatically run migrations on package upgrade.
 migrate-on-upgrade=yes
@@ -176,7 +176,7 @@ debug-host=0.0.0.0
 debug-port=5000
 #
 # Configures the SQLAlchemy connection string for the database.
-connection-string=postgresql://postgres@localhost/meta.sr.ht
+connection-string=postgresql://sourcehut:sourcehut@database/sourcehut
 #
 # Set to "yes" to automatically run migrations on package upgrade.
 migrate-on-upgrade=yes
@@ -221,7 +221,7 @@ debug-host=0.0.0.0
 debug-port=5011
 #
 # Configures the SQLAlchemy connection string for the database.
-connection-string=postgresql://postgres@localhost/paste.sr.ht
+connection-string=postgresql://sourcehut:sourcehut@database/sourcehut
 #
 # Set to "yes" to automatically run migrations on package upgrade.
 migrate-on-upgrade=yes
@@ -246,7 +246,7 @@ debug-host=0.0.0.0
 debug-port=5006
 #
 # Configures the SQLAlchemy connection string for the database.
-connection-string=postgresql://postgres@localhost/lists.sr.ht
+connection-string=postgresql://sourcehut:sourcehut@database/sourcehut
 #
 # Set to "yes" to automatically run migrations on package upgrade.
 migrate-on-upgrade=yes
@@ -341,7 +341,7 @@ debug-host=0.0.0.0
 debug-port=5003
 #
 # Configures the SQLAlchemy connection string for the database.
-connection-string=postgresql://postgres@localhost/todo.sr.ht
+connection-string=postgresql://sourcehut:sourcehut@database/sourcehut
 #
 # Set to "yes" to automatically run migrations on package upgrade.
 migrate-on-upgrade=yes
@@ -386,7 +386,7 @@ debug-host=0.0.0.0
 debug-port=5002
 #
 # Configures the SQLAlchemy connection string for the database.
-connection-string=postgresql://postgres@localhost/builds.sr.ht
+connection-string=postgresql://sourcehut:sourcehut@database/sourcehut
 #
 # Set to "yes" to automatically run migrations on package upgrade.
 migrate-on-upgrade=yes
@@ -467,7 +467,7 @@ debug-host=0.0.0.0
 debug-port=5010
 #
 # Configures the SQLAlchemy connection string for the database.
-connection-string=postgresql://postgres@localhost/hg.sr.ht
+connection-string=postgresql://sourcehut:sourcehut@database/sourcehut
 #
 # The redis connection used for the webhooks worker
 webhooks=redis://localhost:6379/1
@@ -525,3 +525,23 @@ internal-ipnet=127.0.0.0/8,::1/128,192.168.0.0/16,10.0.0.0/8
 
 # NOTE: this is not a typo. It goes into the git dispatch section because
 # that script actually handles all the dispatching (git, hg, man, etc.)
+
+[man.sr.ht]
+#
+# URL man.sr.ht is being served at (protocol://domain)
+origin={{mansrht_domain}}
+#
+# Address and port to bind the debug server to
+debug-host=0.0.0.0
+debug-port=5004
+#
+# Configures the SQLAlchemy connection string for the database.
+connection-string=postgresql://sourcehut:sourcehut@database/sourcehut
+#
+# Set to "yes" to automatically run migrations on package upgrade.
+migrate-on-upgrade=yes
+#
+# man.sr.ht's OAuth client ID and secret for meta.sr.ht
+# Register your client at meta.example.org/oauth
+oauth-client-id=CHANGEME
+oauth-client-secret=CHANGEME
