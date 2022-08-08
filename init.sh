@@ -77,7 +77,7 @@ function generate_launch_shell() {
 
     m_domain="http://$m.$domain_name"
 
-    if [[ "$domain_name"  == "http://localhost" ]]; then
+    if [[ "$domain_name"  == "http://127.0.0.1" ]]; then
          m_domain=$domain_name:$mp
     fi
 
@@ -85,6 +85,8 @@ function generate_launch_shell() {
     sed -i "s@$tp@$m_domain@" config.ini
   done
   sed "s/{{PORTS}}/5001-500$md_count:5001-500$md_count/" ./template/docker-compose.yml.template >docker-compose.yml
+  #  fix builds launch
+  sed -i "s/buildssrht/buildsrht/" start.sh
   echo "tail -f /dev/null" >>start.sh
 }
 
