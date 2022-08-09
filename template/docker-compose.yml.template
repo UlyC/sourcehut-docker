@@ -1,7 +1,7 @@
 version: '3.4'
 
 services:
-  redis:
+  redis-kv:
     image: redis:latest
   database:
     image: postgres:latest
@@ -20,7 +20,7 @@ services:
       - ./config.ini:/etc/sr.ht/config.ini
     links:
       - database
-      - redis
+      - redis-kv
 
 volumes:
   db-data:

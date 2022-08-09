@@ -34,7 +34,7 @@ network-key={{NETWORK_KEY}}
 # be shared between nodes (e.g. git1.sr.ht and git2.sr.ht), but need not be
 # shared between services. It may be shared between services, however, with no
 # ill effect, if this better suits your infrastructure.
-redis-host=redis://127.0.0.1:6379
+redis-host=redis://redis-kv:6379
 #
 # The Prometheus Pushgateway instance to deliver gitsrht-periodic metrics to (http[s]://host:port)
 pushgateway=
@@ -107,7 +107,7 @@ connection-string=postgresql://sourcehut:sourcehut@database/sourcehut
 migrate-on-upgrade=yes
 #
 # The redis connection used for the webhooks worker
-webhooks=redis://localhost:6379/1
+webhooks=redis://redis-kv:6379/1
 #
 # A post-update script which is installed in every git repo.
 post-update-script=/usr/bin/gitsrht-update-hook
@@ -181,6 +181,41 @@ connection-string=postgresql://sourcehut:sourcehut@database/sourcehut
 # Set to "yes" to automatically run migrations on package upgrade.
 migrate-on-upgrade=yes
 
+# The redis connection used for the webhooks worker
+webhooks=redis://redis-kv:6379/1
+#
+# If "yes", the user will be sent the stock sourcehut welcome emails after
+# signup (requires cron to be configured properly). These are specific to the
+# sr.ht instance so you probably want to patch these before enabling this.
+welcome-emails=no
+
+#
+# Origin URL for the API
+# By default, the API port is 100 more than the web port
+# api-origin=http://localhost:5100
+
+[meta.sr.ht::api]
+#
+# Maximum complexity of GraphQL queries. The higher this number, the more work
+# that API clients can burden the API backend with. Complexity is equal to the
+# number of discrete fields which would be returned to the user. 200 is a good
+# default.
+max-complexity=200
+
+#
+# The maximum time the API backend will spend processing a single API request.
+#
+# See https://golang.org/pkg/time/#ParseDuration
+max-duration=3s
+
+#
+# Set of IP subnets which are permitted to utilize internal API
+# authentication. This should be limited to the subnets from which your
+# *.sr.ht services are running.
+#
+# Comma-separated, CIDR notation.
+internal-ipnet=127.0.0.0/8,::1/128,192.168.0.0/16,10.0.0.0/8
+
 [meta.sr.ht::settings]
 #
 # If "no", public registration will not be permitted.
@@ -252,11 +287,11 @@ connection-string=postgresql://sourcehut:sourcehut@database/sourcehut
 migrate-on-upgrade=yes
 #
 # The redis connection used for the webhooks worker
-webhooks=redis://localhost:6379/1
+webhooks=redis://redis-kv:6379/1
 #
 # The redis connection used for the Celery worker (configure this on both the
 # master and workers)
-redis=redis://localhost:6379/0
+redis=redis://redis-kv:6379/0
 #
 # The domain that incoming email should be sent to. Forward mail sent here to
 # the LTMP socket.
@@ -355,7 +390,7 @@ oauth-client-secret=CHANGEME
 notify-from=CHANGEME@example.org
 #
 # The redis connection used for the webhooks worker
-webhooks=redis://localhost:6379/1
+webhooks=redis://redis-kv:6379/1
 #
 # Origin URL for the API
 # Only needed if not run behind a reverse proxy, e.g. for local development.
@@ -393,7 +428,7 @@ migrate-on-upgrade=yes
 #
 # The redis connection used for the Celery worker (configure this on both the
 # master and workers)
-redis=redis://localhost:6379/0
+redis=redis://redis-kv:6379/0
 #
 # builds.sr.ht's OAuth client ID and secret for meta.sr.ht
 # Register your client at meta.example.org/oauth
@@ -470,7 +505,7 @@ debug-port=5010
 connection-string=postgresql://sourcehut:sourcehut@database/sourcehut
 #
 # The redis connection used for the webhooks worker
-webhooks=redis://localhost:6379/1
+webhooks=redis://redis-kv:6379/1
 #
 # Disable server "publishing" for new repositories.
 # When 'true', this sets the phases.publish configuration option to 'false' on
