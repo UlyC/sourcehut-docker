@@ -123,16 +123,15 @@ function advance_config() {
   echo -e "Do you want to use ${cyan}Wiki service${none}? ${cyan}1.Yes${none} or ${cyan}2.No${none}?"
   add_module "$man_module"
 
-  # Syntax highlighting
-  # paste.sr.ht
-  echo -e "Do you want to use ${cyan}Syntax highlighting${none}? ${cyan}1.Yes${none} or ${cyan}2.No${none}?"
-  add_module "$paste_module"
-
   # issue and bug tracker service
   # todo.sr.ht
   echo -e "Do you want to use ${cyan}issue and bug tracker service${none}? ${cyan}1.Yes${none} or ${cyan}2.No${none}?"
   add_module "$todo_module"
 
+  # Syntax highlighting
+  # paste.sr.ht
+  echo -e "Do you want to use ${cyan} ad-hoc text file service${none}? ${cyan}1.Yes${none} or ${cyan}2.No${none}?"
+  add_module "$paste_module"
 }
 
 function select_mode() {
