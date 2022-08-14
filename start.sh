@@ -5,7 +5,6 @@ service_list="$*"
 echo "service list: $service_list"
 
 metasrht-initdb
-#metasrht-manageuser  -p  -e admin@test.com  -t admin admin
 /usr/bin/gunicorn metasrht.app:app -c /etc/sr.ht/meta.sr.ht.gunicorn.conf.py -b 0.0.0.0:5000 -D
 #/usr/bin/metasrht-api -b 0.0.0.0:5100 &
 /usr/bin/celery -A metasrht.webhooks worker --loglevel=info &
