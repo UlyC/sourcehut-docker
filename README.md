@@ -39,6 +39,21 @@ Options:
                     values: unconfirmed, active_non_paying, active_free,
                     active_paying, active_delinquent, admin, unknown, suspended
 ````
+## Support Modules
+
+- `meta.sr.ht` ✅
+- `git.sr.ht` ✅
+- `hg.sr.ht` ✅
+- `man.sr.ht` ✅
+- `builds.sr.ht` ✅
+    - Not included `builds.sr.ht worker`
+- `lists.sr.ht` ✅
+- `meta.sr.ht` ✅
+- `todo.sr.ht`  ✅
+- `paste.sr.ht` ✅
+- `dispatch.sr.ht` ❌
+    - See  [Planned deprecation of dispatch.sr.ht](https://sourcehut.org/blog/2022-08-01-dispatch-deprecation-plans/)
+
 ##  Configuration
 
 If you list want to run `lists.sr.ht` or `api` service, you need to set SMTP in [mail] section of `./config.ini` .
