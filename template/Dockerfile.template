@@ -2,7 +2,7 @@ FROM sr.ht-base:dev
 COPY ./start.sh /
 RUN chmod +x /start.sh
 RUN apk add  {{MODULES}}
-CMD ["/bin/sh", "start.sh"]
+CMD ["/bin/sh", "start.sh","{{MODULES}}"]
 
 
 

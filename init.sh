@@ -16,9 +16,10 @@ _yellow() { echo -e "${yellow}$*${none}"; }
 _magenta() { echo -e "${magenta}$*${none}"; }
 _cyan() { echo -e "${cyan}$*${none}"; }
 
-domain_name="http://127.0.0.1"
+local_domain="localtest.me"
+domain_name="${local_domain}"
 modules=""
-meta_module="meta.sr.ht"
+#meta_module="meta.sr.ht"
 git_module="git.sr.ht"
 hg_module="hg.sr.ht"
 build_module="builds.sr.ht"
@@ -65,29 +66,10 @@ function build_base_image() {
   docker build -t sr.ht-base:dev ./base/ && echo
 }
 
-function generate_launch_shell() {
-  md="$(echo "$meta_module $1" | awk '{ gsub(/\./,""); print $0 }')"
-  md_count=$(echo "$md" | awk '{print NF}')
-  cp ./template/config.ini.template config.ini
-  echo "" >"start.sh"
-  for ((i = 1; i <= "$md_count"; i++)); do
-    m=$(echo "$md" | awk -v i="$i" '{print $i }')
-    mp="500$i"
-    echo "$m-initdb" >>"start.sh"
-    echo "/usr/bin/gunicorn $m.app:app -b 0.0.0.0:$mp -D" >>"start.sh"
-    m_domain="http://$m.$domain_name"
 
-    if [[ "$domain_name"  == "http://127.0.0.1" ]]; then
-         m_domain=$domain_name:$mp
-    fi
-
-    tp="{{"$m"_domain}}"
-    sed -i "s@$tp@$m_domain@" config.ini
-  done
-  sed "s/{{PORTS}}/5001-500$md_count:5001-500$md_count/" ./template/docker-compose.yml.template >docker-compose.yml
-  #  fix builds launch
-  sed -i "s/buildssrht/buildsrht/" start.sh
-  echo "tail -f /dev/null" >>start.sh
+function set_domain() {
+  sed "s@$local_domain@$domain_name@g" template/config.ini.template >config.ini
+  sed -i "s/$local_domain/srht/g" "grep -rl $local_domain nginx_conf"
 }
 
 function select_version_control() {
@@ -181,19 +163,29 @@ echo
 echo "domain_input :$domain_input"
 if [[ "$domain_input" == 's' || -z "$domain_input" ]]; then
   echo -e "$yellow skip${none}"
+  cp template/config.ini.template  config.ini
 else
   domain_name=$domain_input
+  set_domain
 fi
+
 echo "domain:  $domain_name"
 echo
 echo
-generate_launch_shell "$modules" &
-progress $! "🤖 Generate Launch Shell"
+#generate_launch_shell "$modules" &
+#progress $! "🤖 Generate Launch Shell"
+
 
 echo
 echo
 sed "s/{{MODULES}}/$modules/" ./template/Dockerfile.template >Dockerfile &
 progress $! "🐋 Generate Dockerfile"
+
+echo
+echo
+db_names=$(echo "$modules" | tr -d '.' | tr " " "," )
+sed "s/{{database_name}}/$db_names/" ./template/docker-compose.yml.template >docker-compose.yml &
+progress $! "🐋 Generate DockerCompose file"
 
 echo
 echo
@@ -218,5 +210,4 @@ progress $! "🔧 Generate Config"
 echo
 echo
 
-# TODO modules config
-# TODO Database secret
+

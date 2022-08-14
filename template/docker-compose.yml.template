@@ -3,25 +3,46 @@ version: '3.4'
 services:
   redis-kv:
     image: redis:latest
+    networks:
+      - srht-net
   database:
     image: postgres:latest
-    environment:
-      POSTGRES_USER: sourcehut
-      POSTGRES_DB: sourcehut
-      POSTGRES_PASSWORD: sourcehut
     volumes:
       - db-data:/var/lib/postgresql/data
+      - ./postgres_sh:/docker-entrypoint-initdb.d
+    environment:
+      POSTGRES_USER: sourcehut
+      POSTGRES_PASSWORD: sourcehut
+      POSTGRES_MULTIPLE_DATABASES: metasrht,{{database_name}}
+    networks:
+      - srht-net
   srhts:
     build: ./
-    ports:
-      - {{PORTS}}
     volumes:
       - git-data:/var/lib/git
       - ./config.ini:/etc/sr.ht/config.ini
-    links:
+    networks:
+      - srht-net
+    depends_on:
       - database
       - redis-kv
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - '80:80'
+    volumes:
+      - ./nginx_conf/:/etc/nginx/
+    networks:
+      - srht-net
+    depends_on:
+      - srhts
 
 volumes:
   db-data:
   git-data:
+
+
+networks:
+  srht-net:
+    driver: bridge

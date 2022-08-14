@@ -94,14 +94,14 @@ private-key={{WEBHOOK_KEY}}
 [git.sr.ht]
 #
 # URL git.sr.ht is being served at (protocol://domain)
-origin={{gitsrht_domain}}
+origin=http://gitsrht.localtest.me
 #
 # Address and port to bind the debug server to
 debug-host=0.0.0.0
 debug-port=5001
 #
 # Configures the SQLAlchemy connection string for the database.
-connection-string=postgresql://sourcehut:sourcehut@database/sourcehut
+connection-string=postgresql://sourcehut:sourcehut@database/gitsrht?sslmode=disable
 #
 # Set to "yes" to automatically run migrations on package upgrade.
 migrate-on-upgrade=yes
@@ -169,14 +169,14 @@ internal-ipnet=127.0.0.0/8,::1/128,192.168.0.0/16,10.0.0.0/8
 #/usr/bin/buildsrht-keys=builds:builds
 
 [meta.sr.ht]
-origin={{metasrht_domain}}
+origin=http://metasrht.localtest.me
 #
 # Address and port to bind the debug server to
 debug-host=0.0.0.0
 debug-port=5000
 #
 # Configures the SQLAlchemy connection string for the database.
-connection-string=postgresql://sourcehut:sourcehut@database/sourcehut
+connection-string=postgresql://sourcehut:sourcehut@database/metasrht?sslmode=disable
 #
 # Set to "yes" to automatically run migrations on package upgrade.
 migrate-on-upgrade=yes
@@ -222,7 +222,7 @@ internal-ipnet=127.0.0.0/8,::1/128,192.168.0.0/16,10.0.0.0/8
 registration=yes
 #
 # Where to redirect new users upon registration
-onboarding-redirect={{DOMAIN}}:5000
+onboarding-redirect=http://gitsrht.localtest.me/
 #
 # How many invites each user is issued upon registration (only applicable if
 # open registration is disabled)
@@ -249,14 +249,14 @@ stripe-secret-key=
 [paste.sr.ht]
 #
 # URL paste.sr.ht is being served at (protocol://domain)
-origin={{pastesrht_domain}}
+origin=http://pastesrht.localtest.me
 #
 # Address and port to bind the debug server to
 debug-host=0.0.0.0
 debug-port=5011
 #
 # Configures the SQLAlchemy connection string for the database.
-connection-string=postgresql://sourcehut:sourcehut@database/sourcehut
+connection-string=postgresql://sourcehut:sourcehut@database/pastesrht?sslmode=disable
 #
 # Set to "yes" to automatically run migrations on package upgrade.
 migrate-on-upgrade=yes
@@ -274,14 +274,14 @@ oauth-client-secret=
 [lists.sr.ht]
 #
 # URL lists.sr.ht is being served at (protocol://domain)
-origin={{listssrht_domain}}
+origin=http://listssrht.localtest.me
 #
 # Address and port to bind the debug server to
 debug-host=0.0.0.0
 debug-port=5006
 #
 # Configures the SQLAlchemy connection string for the database.
-connection-string=postgresql://sourcehut:sourcehut@database/sourcehut
+connection-string=postgresql://sourcehut:sourcehut@database/listssrht?sslmode=disable
 #
 # Set to "yes" to automatically run migrations on package upgrade.
 migrate-on-upgrade=yes
@@ -295,7 +295,7 @@ redis=redis://redis-kv:6379/0
 #
 # The domain that incoming email should be sent to. Forward mail sent here to
 # the LTMP socket.
-posting-domain={{listsrht_domain}}
+posting-domain=http://listssrht.localtest.me
 #
 # lists.sr.ht's OAuth client ID and secret for meta.sr.ht
 # Register your client at meta.example.org/oauth
@@ -369,14 +369,14 @@ internal-ipnet=127.0.0.0/8,::1/128,192.168.0.0/16,10.0.0.0/8
 [todo.sr.ht]
 #
 # URL todo.sr.ht is being served at (protocol://domain)
-origin={{todosrht_domain}}
+origin=http://todosrht.localtest.me
 #
 # Address and port to bind the debug server to
 debug-host=0.0.0.0
 debug-port=5003
 #
 # Configures the SQLAlchemy connection string for the database.
-connection-string=postgresql://sourcehut:sourcehut@database/sourcehut
+connection-string=postgresql://sourcehut:sourcehut@database/todosrht?sslmode=disable
 #
 # Set to "yes" to automatically run migrations on package upgrade.
 migrate-on-upgrade=yes
@@ -414,14 +414,14 @@ posting-domain=
 [builds.sr.ht]
 #
 # URL builds.sr.ht is being served at (protocol://domain)
-origin={{buildssrht_domain}}
+origin=http://buildssrht.localtest.me
 #
 # Address and port to bind the debug server to
 debug-host=0.0.0.0
 debug-port=5002
 #
 # Configures the SQLAlchemy connection string for the database.
-connection-string=postgresql://sourcehut:sourcehut@database/sourcehut
+connection-string=postgresql://sourcehut:sourcehut@database/buildssrht?sslmode=disable
 #
 # Set to "yes" to automatically run migrations on package upgrade.
 migrate-on-upgrade=yes
@@ -495,14 +495,14 @@ s3-prefix=
 [hg.sr.ht]
 #
 # URL hg.sr.ht is being served at (protocol://domain)
-origin={{hgsrht_domain}}
+origin=http://hgsrht.localtest.me
 #
 # Address and port to bind the debug server to
 debug-host=0.0.0.0
 debug-port=5010
 #
 # Configures the SQLAlchemy connection string for the database.
-connection-string=postgresql://sourcehut:sourcehut@database/sourcehut
+connection-string=postgresql://sourcehut:sourcehut@database/hgsrht?sslmode=disable
 #
 # The redis connection used for the webhooks worker
 webhooks=redis://redis-kv:6379/1
@@ -564,14 +564,14 @@ internal-ipnet=127.0.0.0/8,::1/128,192.168.0.0/16,10.0.0.0/8
 [man.sr.ht]
 #
 # URL man.sr.ht is being served at (protocol://domain)
-origin={{mansrht_domain}}
+origin=http://mansrht.localtest.me
 #
 # Address and port to bind the debug server to
 debug-host=0.0.0.0
 debug-port=5004
 #
 # Configures the SQLAlchemy connection string for the database.
-connection-string=postgresql://sourcehut:sourcehut@database/sourcehut
+connection-string=postgresql://sourcehut:sourcehut@database/mansrht?sslmode=disable
 #
 # Set to "yes" to automatically run migrations on package upgrade.
 migrate-on-upgrade=yes

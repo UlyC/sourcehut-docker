@@ -1,0 +1,77 @@
+# Our policy
+#
+# Allowed:
+# - Search engine indexers
+# - Archival services (e.g. IA)
+#
+# Disallowed:
+# - Marketing or SEO crawlers
+# - Bots which are too agressive by default. This is subjective, if you annoy
+#   our sysadmins you'll be blocked.
+#
+# Reach out to sir@cmpwn.com if you have questions.
+
+# It doesn't make sense to index these and/or it's expensive:
+User-agent: *
+Disallow: /*?*
+Disallow: /*.tar.gz$
+Disallow: /metrics
+Disallow: /*/*/blame/*
+Disallow: /*/*/log/*
+Disallow: /*/*/tree/*
+Disallow: /*/*/item/*
+
+# Too aggressive, marketing/SEO
+User-agent: SemrushBot
+Disallow: /
+
+# Too aggressive, marketing/SEO
+User-agent: SemrushBot-SA
+Disallow: /
+
+# Marketing/SEO
+User-agent: AhrefsBot
+Disallow: /
+
+# Marketing/SEO
+User-agent: dotbot
+Disallow: /
+
+# Marketing/SEO
+User-agent: rogerbot
+Disallow: /
+
+User-agent: BLEXBot
+Disallow: /
+
+# Huwei something or another, badly behaved
+User-agent: AspiegelBot
+Disallow: /
+
+# Marketing/SEO
+User-agent: ZoominfoBot
+Disallow: /
+
+# YandexBot is a dickhead, too aggressive
+User-agent: Yandex
+Disallow: /
+
+# Marketing/SEO
+User-agent: MJ12bot
+Disallow: /
+
+# Marketing/SEO
+User-agent: DataForSeoBot
+Disallow: /
+
+# Used for Alexa, I guess, who cares
+User-agent: Amazonbot
+Disallow: /
+
+# No
+User-agent: turnitinbot
+Disallow: /
+
+# Does not respect * directives
+User-agent: Seekport Crawler
+Disallow: /
