@@ -45,9 +45,6 @@ services:
       - static-data:/usr/lib/python3.9/site-packages/
     networks:
       - srht-net
-    depends_on:
-      srhts:
-        condition: service_healthy
 
 volumes:
   db-data:
