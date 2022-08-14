@@ -94,7 +94,7 @@ private-key={{WEBHOOK_KEY}}
 [git.sr.ht]
 #
 # URL git.sr.ht is being served at (protocol://domain)
-origin=http://gitsrht.localtest.me
+origin=http://git.localtest.me
 #
 # Address and port to bind the debug server to
 debug-host=0.0.0.0
@@ -169,7 +169,7 @@ internal-ipnet=127.0.0.0/8,::1/128,192.168.0.0/16,10.0.0.0/8
 #/usr/bin/buildsrht-keys=builds:builds
 
 [meta.sr.ht]
-origin=http://metasrht.localtest.me
+origin=http://meta.localtest.me
 #
 # Address and port to bind the debug server to
 debug-host=0.0.0.0
@@ -222,7 +222,7 @@ internal-ipnet=127.0.0.0/8,::1/128,192.168.0.0/16,10.0.0.0/8
 registration=yes
 #
 # Where to redirect new users upon registration
-onboarding-redirect=http://gitsrht.localtest.me/
+onboarding-redirect=http://git.localtest.me/
 #
 # How many invites each user is issued upon registration (only applicable if
 # open registration is disabled)
@@ -249,7 +249,7 @@ stripe-secret-key=
 [paste.sr.ht]
 #
 # URL paste.sr.ht is being served at (protocol://domain)
-origin=http://pastesrht.localtest.me
+origin=http://paste.localtest.me
 #
 # Address and port to bind the debug server to
 debug-host=0.0.0.0
@@ -274,7 +274,7 @@ oauth-client-secret=
 [lists.sr.ht]
 #
 # URL lists.sr.ht is being served at (protocol://domain)
-origin=http://listssrht.localtest.me
+origin=http://lists.localtest.me
 #
 # Address and port to bind the debug server to
 debug-host=0.0.0.0
@@ -295,7 +295,7 @@ redis=redis://redis-kv:6379/0
 #
 # The domain that incoming email should be sent to. Forward mail sent here to
 # the LTMP socket.
-posting-domain=http://listssrht.localtest.me
+posting-domain=http://lists.localtest.me
 #
 # lists.sr.ht's OAuth client ID and secret for meta.sr.ht
 # Register your client at meta.example.org/oauth
@@ -369,7 +369,7 @@ internal-ipnet=127.0.0.0/8,::1/128,192.168.0.0/16,10.0.0.0/8
 [todo.sr.ht]
 #
 # URL todo.sr.ht is being served at (protocol://domain)
-origin=http://todosrht.localtest.me
+origin=http://todo.localtest.me
 #
 # Address and port to bind the debug server to
 debug-host=0.0.0.0
@@ -414,7 +414,7 @@ posting-domain=
 [builds.sr.ht]
 #
 # URL builds.sr.ht is being served at (protocol://domain)
-origin=http://buildssrht.localtest.me
+origin=http://builds.localtest.me
 #
 # Address and port to bind the debug server to
 debug-host=0.0.0.0
@@ -495,7 +495,7 @@ s3-prefix=
 [hg.sr.ht]
 #
 # URL hg.sr.ht is being served at (protocol://domain)
-origin=http://hgsrht.localtest.me
+origin=http://hg.localtest.me
 #
 # Address and port to bind the debug server to
 debug-host=0.0.0.0
@@ -564,7 +564,7 @@ internal-ipnet=127.0.0.0/8,::1/128,192.168.0.0/16,10.0.0.0/8
 [man.sr.ht]
 #
 # URL man.sr.ht is being served at (protocol://domain)
-origin=http://mansrht.localtest.me
+origin=http://man.localtest.me
 #
 # Address and port to bind the debug server to
 debug-host=0.0.0.0
