@@ -1,14 +1,15 @@
 # sourcehut  [x]  docker
-![sourcehut.png](sourcehut.png)  
+**Make sourcehut run easily in docker**
 
+---
+
+![sourcehut.png](sourcehut.png)
 
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 ![Docker](https://img.shields.io/badge/%F0%9F%90%8B%20-docker-blue)
 
-
-> This project is not recommend for use in production.
-
 ## Quick Start
+> This project is not recommend for use in production.
 
 ```bash
 bash ./init.sh
