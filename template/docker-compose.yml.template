@@ -1,4 +1,4 @@
-version: '3.4'
+version: '3.9'
 
 services:
   redis-kv:
@@ -16,16 +16,25 @@ services:
       POSTGRES_MULTIPLE_DATABASES: metasrht,{{database_name}}
     networks:
       - srht-net
+    healthcheck:
+        test: ["CMD", "pg_isready", "-U", "metasrht"]
+        interval: 10s
+        timeout: 5s
+        retries: 3
+
   srhts:
     build: ./
     volumes:
       - git-data:/var/lib/git
       - ./config.ini:/etc/sr.ht/config.ini
+      - static-data:/usr/lib/python3.9/site-packages/
+
     networks:
       - srht-net
     depends_on:
-      - database
-      - redis-kv
+      database:
+          condition: service_healthy
+
 
   nginx:
     image: nginx:alpine
@@ -33,14 +42,17 @@ services:
       - '80:80'
     volumes:
       - ./nginx_conf/:/etc/nginx/
+      - static-data:/usr/lib/python3.9/site-packages/
     networks:
       - srht-net
     depends_on:
-      - srhts
+      srhts:
+        condition: service_healthy
 
 volumes:
   db-data:
   git-data:
+  static-data:
 
 
 networks:
