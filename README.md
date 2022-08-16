@@ -56,7 +56,7 @@ Options:
 
 ##  Configuration
 
-If you list want to run `lists.sr.ht` or `api` service, you need to set SMTP in [mail] section of `./config.ini` .
+If you  want to run `lists.sr.ht` or `api` service, you need to set SMTP in [mail] section of `./config.ini` .
 Then uncomment the code corresponding in `start.sh`.
 
 ```bash
