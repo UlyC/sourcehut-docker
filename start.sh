@@ -13,7 +13,7 @@ echo "0	2	*	*	*  /usr/bin/metasrht-daily" >>/etc/crontab
 if [[ "$service_list" == *"git"* ]]; then
   gitsrht-initdb
   /usr/bin/gunicorn gitsrht.app:app -b 0.0.0.0:5001 -c /etc/sr.ht/git.sr.ht.gunicorn.conf.py -D
-  #  /usr/bin/gitsrht-api -b 0.0.0.0:5101
+  #  /usr/bin/gitsrht-api -b 0.0.0.0:5101 &
   /usr/bin/celery -A gitsrht.webhooks worker --loglevel=info &
   echo "*/20 * * * *  /usr/bin/gitsrht-periodic" >>/etc/crontab
 fi
@@ -34,7 +34,7 @@ fi
 
 #if [[ "$service_list" == *"lists"* ]]; then
 #  listssrht-initdb
-#  /usr/bin/gunicorn listsrht.app:app -b 0.0.0.0:5006 -c /etc/sr.ht/lists.sr.ht.gunicorn.conf.py -D
+#  /usr/bin/gunicorn listssrht.app:app -b 0.0.0.0:5006 -c /etc/sr.ht/lists.sr.ht.gunicorn.conf.py -D
 #  /usr/bin/listssrht-api -b 0.0.0.0:5106 &
 #  /usr/bin/listssrht-lmtp &
 #  /usr/bin/celery -A listssrht.webhooks worker --loglevel=info &
