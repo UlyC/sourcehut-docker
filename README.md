@@ -61,7 +61,13 @@ Then uncomment the code corresponding in `start.sh`.
 
 ```bash
 docker-compose up --build -d --force
-````
+
+```
+
+### oauth-client
+Register your client at `meta.localtest.me/oauth`
+and set  Base Redirect URI `http://{{your_service}}.localtest.me/oauth/callback`
+
 
 ### Advance Configuration
 See [official document](https://man.sr.ht/configuration.md)
